@@ -2,6 +2,7 @@ package me.gildasquemener.tradingcardkata.features
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import me.gildasquemener.tradingcardkata.Game.infrastructure.NewGameResponse
+import org.hamcrest.core.Is
 import org.hamcrest.core.IsAnything
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,7 +42,9 @@ internal class `Starting a new game` {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
-                    TODO("Add assertion against response schema")
+                    jsonPath("$.id") {
+                        value(response.id)
+                    }
                 }
             }
     }
