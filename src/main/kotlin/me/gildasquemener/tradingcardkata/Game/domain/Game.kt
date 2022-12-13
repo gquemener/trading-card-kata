@@ -16,8 +16,12 @@ class Game {
     }
 
     @CommandHandler
-    constructor(cmd: StartNewGame) {
-        AggregateLifecycle.apply(GameHasStarted(cmd.id))
+    constructor(cmd: StartNewGame, dealer: CardDealer) {
+        AggregateLifecycle.apply(GameHasStarted(
+            cmd.id,
+            dealer.initialPlayerDeck(),
+            dealer.initialComputerDeck()
+        ))
     }
     
     @EventSourcingHandler
