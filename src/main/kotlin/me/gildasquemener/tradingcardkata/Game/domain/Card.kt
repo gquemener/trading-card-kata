@@ -1,9 +1,5 @@
 package me.gildasquemener.tradingcardkata.Game.domain
 
-import java.util.UUID
+import com.fasterxml.jackson.annotation.JsonProperty
 
-typealias CardId = UUID
-
-data class Card(private val id: CardId) {
-
-}
+data class Card(@JsonProperty("manaCost") val manaCost: Int)

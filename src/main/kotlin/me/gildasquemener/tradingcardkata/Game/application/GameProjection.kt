@@ -12,7 +12,13 @@ class GameProjection {
 
     @EventHandler
     fun on(event: GameHasStarted) {
-        games[event.gameId] = GameState(event.gameId)
+        games[event.gameId] = GameState(
+            event.gameId,
+            GameState.PlayerState(
+                event.initialPlayerDeck.size,
+                event.initialPlayerHand.map { GameState.Card(it.manaCost) }
+            )
+        )
     }
 
     @QueryHandler

@@ -1,6 +1,7 @@
 package me.gildasquemener.tradingcardkata.Game.domain
 
 import me.gildasquemener.tradingcardkata.Game.application.StartNewGame
+import me.gildasquemener.tradingcardkata.Game.domain.Player.*
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -16,11 +17,16 @@ class Game {
     }
 
     @CommandHandler
-    constructor(cmd: StartNewGame, dealer: CardDealer) {
+    constructor(cmd: StartNewGame, dealer: DeckDealer) {
+        val (playerHand, playerDeck) = dealer.deck(HUMAN).draw(3);
+        val (opponentHand, opponentDeck) = dealer.deck(COMPUTER).draw(3);
+
         AggregateLifecycle.apply(GameHasStarted(
             cmd.id,
-            dealer.initialPlayerDeck(),
-            dealer.initialComputerDeck()
+            playerDeck.cards,
+            playerHand,
+            opponentDeck.cards,
+            opponentHand
         ))
     }
     
