@@ -9,7 +9,7 @@ import org.junit.jupiter.api.function.Executable
 class DeckTest {
     @Test
     fun `draw cards with no remaining cards in deck`() {
-        val card = Card(0)
+        val card = Card(CardId.generate(), 0)
         val deck = Deck(listOf(card))
         val (drawn, newDeck) = deck.draw(1)
 
@@ -19,9 +19,9 @@ class DeckTest {
 
     @Test
     fun `draw cards with remaining cards in deck`() {
-        val card1 = Card(1)
-        val card2 = Card(2)
-        val card3 = Card(3)
+        val card1 = Card(CardId.generate(), 1)
+        val card2 = Card(CardId.generate(), 2)
+        val card3 = Card(CardId.generate(), 3)
         val deck = Deck(listOf(card1, card2, card3))
 
         val (drawn, newDeck) = deck.draw(2)
@@ -40,7 +40,7 @@ class DeckTest {
     @Test
     fun `prevent drawing more cards than available`() {
         assertThrows(IllegalStateException::class.java) {
-            Deck(listOf(Card(1))).draw(2)
+            Deck(listOf(Card(CardId.generate(), 1))).draw(2)
         }
     }
 }

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class GameProjection {
-    private val games: MutableMap<String, GameState> = HashMap();
+    private val games: MutableMap<GameId, GameState> = HashMap();
 
     @EventHandler
     fun on(event: GameHasStarted) {
         games[event.gameId] = GameState(
-            event.gameId,
+            event.gameId.toString(),
             GameState.PlayerState(
                 event.initialPlayerDeck.size,
                 event.initialPlayerHand.map { GameState.Card(it.manaCost) }

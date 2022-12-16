@@ -4,6 +4,7 @@ import me.gildasquemener.tradingcardkata.Game.application.FetchGame
 import me.gildasquemener.tradingcardkata.Game.application.GameProjection
 import me.gildasquemener.tradingcardkata.Game.application.GameState
 import me.gildasquemener.tradingcardkata.Game.domain.Card
+import me.gildasquemener.tradingcardkata.Game.domain.CardId
 import me.gildasquemener.tradingcardkata.Game.domain.GameHasStarted
 import me.gildasquemener.tradingcardkata.Game.domain.GameId
 import org.hamcrest.MatcherAssert.assertThat
@@ -16,17 +17,17 @@ class GameProjectionTest {
     fun testInitGameState() {
         val subject = GameProjection()
 
-        val gameId = GameId.generate().toString()
-        val initialPlayerDeck = (1..17).map { Card(it) }
-        val initialPlayerHand = (1..3).map { Card(it) }
-        val initialOpponentDeck = (1..17).map { Card(it) }
-        val initialOpponentHand = (1..3).map { Card(it) }
+        val gameId = GameId.generate()
+        val initialPlayerDeck = (1..17).map { Card(CardId.generate(), it) }
+        val initialPlayerHand = (1..3).map { Card(CardId.generate(), it) }
+        val initialOpponentDeck = (1..17).map { Card(CardId.generate(), it) }
+        val initialOpponentHand = (1..3).map { Card(CardId.generate(), it) }
 
         subject.on(GameHasStarted(gameId, initialPlayerDeck, initialPlayerHand, initialOpponentDeck, initialOpponentHand))
 
         val game = subject.fetch(FetchGame(gameId))
 
-        assertThat(game.id, equalTo(gameId))
+        assertThat(game.id, equalTo(gameId.toString()))
         assertThat(game.activePlayer, equalTo(null))
         assertThat(game.player.deckSize, equalTo(initialPlayerDeck.size))
         assertThat(game.player.hand, equalTo(initialPlayerHand.map { GameState.Card(it.manaCost) }))
